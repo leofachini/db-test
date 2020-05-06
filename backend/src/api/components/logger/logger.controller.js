@@ -5,7 +5,7 @@ const LoggerService = require('./logger.service');
 
 module.exports = function LoggerController() {
   
-  const UPLOAD_DIR = `${process.cwd()}/backend/tmp`;
+  const UPLOAD_DIR = `${process.cwd()}/tmp`;
   
   this.processLogFile = async (req, res) => {
     // clean up /tmp dir
