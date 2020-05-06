@@ -1,0 +1,36 @@
+.Form-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.Upload-form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 20vh;
+  justify-content: space-evenly;
+  width: 300px;
+}
+
+.Upload-form > * {
+  width: 100%;
+}
+
+.file-label {
+  font-weight: bold;
+}
+
+.File-span-name {
+  font-weight: bold;
+}
+
+.File-span-label {
+  margin-right: 5px;
+}
+
+.File-name-container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
