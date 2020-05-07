@@ -64,6 +64,7 @@ class App extends React.Component {
 
   onLogUpload = (reportData) => {
     console.log(reportData);
+    alert('Your file has been uploaded successfully!');
   };
 }
 
