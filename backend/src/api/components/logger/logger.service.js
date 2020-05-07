@@ -1,4 +1,5 @@
 const fs = require('fs');
+const fsExtra = require('fs-extra');
 const Log = require('./log.model');
 const Document = require('./document.model');
 const Report = require('./report.model');
@@ -172,7 +173,16 @@ module.exports = function LoggerService() {
       renderingWithoutGet,
     });
 
-    return new Report({ documents: documentArray, summary });
+    const report = new Report({ documents: documentArray, summary });
+    writeReportToFile(report);
+    return report;
+  }
+
+  function writeReportToFile(report) {
+    // For also same simplicity reasons, using Sync calls here
+    // clean up /result dir
+    fsExtra.emptyDirSync(`${process.cwd()}/result`);
+    fs.writeFileSync(`${process.cwd()}/result/report.json`, JSON.stringify(report, null, 2));
   }
 
   return this;
