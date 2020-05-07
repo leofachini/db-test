@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const express = require('express');
 const logger = require('morgan');
 const path = require('path');
@@ -8,6 +9,7 @@ const loggerRouter = require('./src/api/components/logger/logger.router');
 
 const expressMiddleware = express();
 
+expressMiddleware.use(cors());
 expressMiddleware.use(logger('dev'));
 expressMiddleware.use(express.json());
 expressMiddleware.use(express.urlencoded({ extended: false }));

@@ -14,7 +14,7 @@ module.exports = function LoggerController() {
     let { file } = await parseFilesFromFormUpload(req);
     file = await renameFileToOriginalName(file);
     const report = await LoggerService.generateReport(file);
-    
+
     res.json(report);
   };
 
