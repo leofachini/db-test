@@ -1,6 +1,8 @@
 const fs = require('fs');
 const Log = require('./log.model');
 const Document = require('./document.model');
+const Report = require('./report.model');
+const Summary = require('./summary.model');
 const LOG_LEVEL = require('./log-level.constant');
 
 module.exports = function LoggerService() {
@@ -17,7 +19,7 @@ module.exports = function LoggerService() {
 
       const rawFile = await readFile(fileInfo);
       processLog(rawFile);
-      return documents;
+      return getReport();
     } catch (error) {
       console.error(`Something went wrong when trying to reading the file!`);
     }
@@ -25,6 +27,8 @@ module.exports = function LoggerService() {
 
   async function readFile(fileInfo) {
     return new Promise((resolve, reject) => {
+      // Due to simplicity I've used the readFile, but we should use stream reading instead,
+      // since the log file would change
       fs.readFile(fileInfo.path, (err, rawFileDataBuffer) => {
         if (err) {
           reject(err);
@@ -143,6 +147,32 @@ module.exports = function LoggerService() {
         timestamp: log.timestamp,
       };
     }
+  }
+
+  function getReport() {
+    const documentArray = Array.from(documents.values());
+
+    let totalOfRenderings = documentArray.length;
+    let duplicateRedering = 0;
+    let renderingWithoutGet = 0;
+
+    documentArray.forEach(doc => {
+      duplicateRedering += doc.startRenderingList.length;
+      if (doc.getRenderingList.length === 0) {
+        renderingWithoutGet += 1;
+      }
+    });
+
+    // We must discount the already rendered 1 time document
+    duplicateRedering = duplicateRedering - totalOfRenderings;
+
+    const summary = new Summary({
+      totalOfRenderings,
+      duplicateRedering,
+      renderingWithoutGet,
+    });
+
+    return new Report({ documents: documentArray, summary });
   }
 
   return this;
